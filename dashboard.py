@@ -90,8 +90,8 @@ else:
                 if clean.strip():
                     st.caption(clean)
                 st.caption(f"{source}  |  {published[:10]}")
-                if h_score is not None and row.get("h_response"):
-                    with st.expander("Model responses"):
+                with st.expander("Model responses"):
+                    if h_score is not None and row.get("h_response"):
                         try:
                             data = json.loads(row["h_response"])
                             for model, response in data.items():
@@ -99,6 +99,8 @@ else:
                                     st.markdown(f"**{model}:** {response}")
                         except Exception:
                             st.write(row["h_response"])
+                    else:
+                        st.caption("Not yet verified by hallucinations.cloud")
             st.markdown("---")
 
 

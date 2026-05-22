@@ -413,7 +413,7 @@ def verify_articles():
     c.execute("""
         SELECT id, title, summary FROM articles
         WHERE ai_relevant = 1 AND h_score IS NULL
-        LIMIT 5
+        LIMIT 50
     """)
     rows = c.fetchall()
 
