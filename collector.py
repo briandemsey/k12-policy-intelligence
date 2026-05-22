@@ -72,8 +72,10 @@ CALIFORNIA_KEYWORDS = ["california", "cde", "lausd", "sacramento", "san francisc
                        "los angeles", "san diego", "bay area", "silicon valley"]
 
 AI_KEYWORDS = ["artificial intelligence", " ai ", "machine learning", "chatgpt",
-               "generative", "algorithm", "automation", "technology", "digital",
-               "computer", "coding", "data", "software", "robot", "stem"]
+               "generative ai", "large language model", "llm", "chatbot",
+               "openai", "claude", "gemini", "copilot", "deep learning",
+               "ai tool", "ai model", "ai system", "ai policy", "ai literacy",
+               "ai in school", "ai in education", "ai in classroom"]
 
 RSS_FEEDS = [
     # Policy & Legislation
