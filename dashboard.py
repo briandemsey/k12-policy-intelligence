@@ -19,8 +19,8 @@ st.caption("Powered by hallucinations.cloud multi-model verification")
 # --- Sidebar ---
 
 st.sidebar.header("Filters")
-filter_verified = st.sidebar.checkbox("Verified only (H-Score)", value=True)
-filter_ai       = st.sidebar.checkbox("AI-relevant only", value=True)
+filter_verified = st.sidebar.checkbox("Verified only (H-Score)", value=False)
+filter_ai       = st.sidebar.checkbox("AI-relevant only", value=False)
 search_term     = st.sidebar.text_input("Search titles", "")
 sort_by         = st.sidebar.selectbox("Sort by", ["Newest", "H-Score"])
 
@@ -106,7 +106,7 @@ else:
 
 st.subheader("All Collected Articles")
 
-all_articles = db.get_articles(limit=1000, sort_by="published")
+all_articles = db.get_articles(limit=2000, sort_by="published")
 
 rows = []
 for a in all_articles:

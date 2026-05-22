@@ -38,7 +38,7 @@ def update_h_score(aid, h_score, h_response):
     return r.status_code in (200, 204)
 
 def get_articles(verified_only=False, ai_only=False, search=None,
-                 sort_by="published", limit=200):
+                 sort_by="published", limit=1000):
     params = f"?limit={limit}"
     if verified_only:
         params += "&h_score=not.is.null"
@@ -53,9 +53,10 @@ def get_articles(verified_only=False, ai_only=False, search=None,
 
     r = requests.get(
         f"{SUPABASE_URL}/rest/v1/articles{params}&select=*",
-        headers=headers()
+        headers={**headers(), "Range": f"0-{limit-1}",
+                 "Prefer": "count=exact"}
     )
-    return r.json() if r.status_code == 200 else []
+    return r.json() if r.status_code in (200, 206) else []
 
 def get_stats():
     def count(params=""):
