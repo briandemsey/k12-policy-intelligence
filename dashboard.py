@@ -7,6 +7,7 @@ import streamlit as st
 import json
 import os
 import sys
+from datetime import datetime, timedelta
 sys.path.insert(0, os.path.dirname(__file__))
 import db
 
@@ -19,6 +20,25 @@ st.caption("Powered by hallucinations.cloud multi-model verification")
 # --- Sidebar ---
 
 st.sidebar.header("Filters")
+
+# Date range
+today = datetime.today().date()
+date_range = st.sidebar.selectbox("Date range", [
+    "All time", "Today", "Yesterday", "Past week", "Past month", "Custom"
+])
+if date_range == "Today":
+    date_from = today
+elif date_range == "Yesterday":
+    date_from = today - timedelta(days=1)
+elif date_range == "Past week":
+    date_from = today - timedelta(days=7)
+elif date_range == "Past month":
+    date_from = today - timedelta(days=30)
+elif date_range == "Custom":
+    date_from = st.sidebar.date_input("From", value=today - timedelta(days=30))
+else:
+    date_from = None
+
 filter_verified = st.sidebar.checkbox("Verified only (H-Score)", value=False)
 filter_ai       = st.sidebar.checkbox("AI-relevant only", value=False)
 search_term     = st.sidebar.text_input("Search titles", "")
@@ -51,6 +71,7 @@ articles = db.get_articles(
     ai_only=filter_ai,
     search=search_term if search_term else None,
     sort_by=sort_field,
+    date_from=str(date_from) if date_from else None,
     limit=200
 )
 
@@ -113,7 +134,8 @@ else:
 
 st.subheader("All Collected Articles")
 
-all_articles = db.get_articles(limit=2000, sort_by="published")
+all_articles = db.get_articles(limit=2000, sort_by="published",
+                               date_from=str(date_from) if date_from else None)
 
 rows = []
 for a in all_articles:

@@ -38,7 +38,7 @@ def update_h_score(aid, h_score, h_response):
     return r.status_code in (200, 204)
 
 def get_articles(verified_only=False, ai_only=False, search=None,
-                 sort_by="published", limit=1000):
+                 sort_by="published", date_from=None, limit=1000):
     params = f"?limit={limit}"
     if verified_only:
         params += "&h_score=not.is.null"
@@ -46,6 +46,8 @@ def get_articles(verified_only=False, ai_only=False, search=None,
         params += "&ai_relevant=eq.1"
     if search:
         params += f"&title=ilike.*{search}*"
+    if date_from:
+        params += f"&published=gte.{date_from}"
     if sort_by == "h_score":
         params += "&order=h_score.desc.nullslast"
     else:
