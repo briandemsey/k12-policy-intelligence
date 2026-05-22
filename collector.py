@@ -52,6 +52,14 @@ NEWSAPI_QUERIES = [
     "education budget cuts Congress 2026",
     "charter school voucher legislation",
     "special education policy reform",
+    "ChatGPT schools students classrooms",
+    "AI literacy curriculum schools",
+    "education equity access technology",
+    "school superintendent district policy",
+    "California education bill 2026",
+    "reading math scores student achievement",
+    "school board policy decision 2026",
+    "edtech startup schools funding",
 ]
 
 KEYWORDS = [
@@ -87,6 +95,22 @@ RSS_FEEDS = [
     # Teacher & Administrator Perspective
     {"name": "AASA School Leader",     "url": "https://www.aasa.org/rss/schooladministrator.aspx"},
     {"name": "NEA Today",              "url": "https://www.nea.org/rss.xml"},
+    # Major News Organizations
+    {"name": "NPR Education",          "url": "https://feeds.npr.org/1013/rss.xml"},
+    {"name": "NY Times Education",     "url": "https://rss.nytimes.com/services/xml/rss/nyt/Education.xml"},
+    {"name": "Washington Post Education", "url": "https://feeds.washingtonpost.com/rss/world/education"},
+    {"name": "The Guardian Education", "url": "https://www.theguardian.com/education/rss"},
+    {"name": "PBS NewsHour Education", "url": "https://www.pbs.org/newshour/feeds/rss/education"},
+    # California-Specific
+    {"name": "KQED Education",         "url": "https://www.kqed.org/education/feed"},
+    {"name": "LA Times Education",     "url": "https://www.latimes.com/california/rss2.0.xml"},
+    {"name": "EdSource",               "url": "https://edsource.org/feed"},
+    # Policy & Research
+    {"name": "Politico Education",     "url": "https://www.politico.com/rss/education.xml"},
+    {"name": "Learning Policy Institute", "url": "https://learningpolicyinstitute.org/feed"},
+    {"name": "Education Trust",        "url": "https://edtrust.org/feed/"},
+    {"name": "ASCD",                   "url": "https://www.ascd.org/rss"},
+    {"name": "MindShift KQED",        "url": "https://feeds.feedburner.com/kqed/MindShift"},
 ]
 
 

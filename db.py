@@ -5,6 +5,25 @@ Used by both collector.py and dashboard.py.
 
 import os
 import requests
+from datetime import datetime
+
+def normalize_date(date_str):
+    """Convert any date string to YYYY-MM-DD for consistent Supabase filtering."""
+    if not date_str:
+        return None
+    for fmt in (
+        "%a, %d %b %Y %H:%M:%S %z",
+        "%a, %d %b %Y %H:%M:%S %Z",
+        "%Y-%m-%dT%H:%M:%SZ",
+        "%Y-%m-%dT%H:%M:%S%z",
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d",
+    ):
+        try:
+            return datetime.strptime(date_str.strip(), fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return date_str[:10]
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://evmqoirorcpkurxlqsed.supabase.co")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
@@ -21,6 +40,8 @@ def article_exists(aid):
     return len(r.json()) > 0
 
 def insert_article(row):
+    if row.get("published"):
+        row["published"] = normalize_date(row["published"])
     r = requests.post(
         f"{SUPABASE_URL}/rest/v1/articles",
         headers=headers(),
