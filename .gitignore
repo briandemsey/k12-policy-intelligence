@@ -1,0 +1,6 @@
+*.db
+*.sqlite
+__pycache__/
+.env
+*.pyc
+articles_list.csv

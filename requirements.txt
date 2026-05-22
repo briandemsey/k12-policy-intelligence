@@ -1,0 +1,13 @@
+streamlit
+requests
+feedparser
+pandas
+openai
+anthropic
+google-generativeai
+cohere
+newspaper3k
+playwright
+beautifulsoup4
+lxml
+python-dotenv
