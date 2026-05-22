@@ -89,7 +89,12 @@ else:
                 clean = summary.split(">")[-1][:200] if "<" in summary else summary[:200]
                 if clean.strip():
                     st.caption(clean)
-                st.caption(f"{source}  |  {published[:10]}")
+                try:
+                    import pandas as pd
+                    pub_fmt = pd.to_datetime(published).strftime("%B %d, %Y")
+                except Exception:
+                    pub_fmt = published[:10]
+                st.caption(f"{source}  |  {pub_fmt}")
                 with st.expander("Model responses"):
                     if h_score is not None and row.get("h_response"):
                         try:
