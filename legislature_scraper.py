@@ -97,6 +97,28 @@ def scrape_bills():
                         if c.fetchone():
                             continue
 
+                        # Visit bill page to extract actual publication date
+                        published = str(datetime.now())[:10]
+                        summary = f"California bill: {bill_title}"
+                        try:
+                            bill_page = browser.new_page()
+                            bill_page.goto(bill_url, timeout=20000)
+                            bill_page.wait_for_load_state("networkidle", timeout=10000)
+                            content = bill_page.content()
+                            bill_page.close()
+                            # Extract "Date Published: MM/DD/YYYY" from page
+                            import re
+                            m = re.search(r'Date Published:\s*(\d{2}/\d{2}/\d{4})', content)
+                            if m:
+                                d = datetime.strptime(m.group(1), "%m/%d/%Y")
+                                published = d.strftime("%Y-%m-%d")
+                            # Extract bill summary text
+                            m2 = re.search(r'An act to[^<]{20,300}', content)
+                            if m2:
+                                summary = m2.group(0).strip()
+                        except Exception:
+                            pass
+
                         # Determine relevance
                         title_lower = bill_title.lower()
                         ai_rel = any(kw in title_lower for kw in
@@ -110,11 +132,12 @@ def scrape_bills():
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """, (
                             aid, "CA Legislature", bill_title, bill_url,
-                            str(datetime.now())[:10], f"California bill: {bill_title}",
+                            published, summary,
                             1, 1 if ai_rel else 0,
                             str(datetime.now())
                         ))
                         new_count += 1
+                        time.sleep(1)
 
                     except Exception:
                         continue
