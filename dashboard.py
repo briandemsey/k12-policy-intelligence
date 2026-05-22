@@ -40,7 +40,7 @@ else:
     date_from = None
 
 filter_verified = st.sidebar.checkbox("Verified only (H-Score)", value=False)
-filter_ai       = st.sidebar.checkbox("AI-relevant only", value=False)
+filter_ai       = st.sidebar.checkbox("AI-relevant only", value=True)
 search_term     = st.sidebar.text_input("Search titles", "")
 sort_by         = st.sidebar.selectbox("Sort by", ["Newest", "H-Score"])
 
