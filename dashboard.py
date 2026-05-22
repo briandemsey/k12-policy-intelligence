@@ -49,31 +49,38 @@ if st.sidebar.button("Refresh"):
     st.rerun()
 
 
-# --- Stats ---
+# --- Stats (filtered) ---
 
-total, verified, ai_rel, avg_score, sources = db.get_stats()
+articles_for_stats = db.get_articles(
+    verified_only=filter_verified,
+    ai_only=filter_ai,
+    search=search_term if search_term else None,
+    date_from=str(date_from) if date_from else None,
+    limit=2000
+)
+
+total_f    = len(articles_for_stats)
+verified_f = sum(1 for a in articles_for_stats if a.get("h_score") is not None)
+scores_f   = [a["h_score"] for a in articles_for_stats if a.get("h_score") is not None]
+avg_f      = sum(scores_f) / len(scores_f) if scores_f else 0
+sources_f  = len(set(a.get("source","") for a in articles_for_stats))
 
 c1, c2, c3, c4, c5 = st.columns(5)
-c1.metric("Total Articles", total)
-c2.metric("AI Relevant", ai_rel)
-c3.metric("H-Score Verified", verified)
-c4.metric("Avg H-Score", f"{avg_score:.1f}/10")
-c5.metric("Sources", sources)
+c1.metric("Articles", total_f)
+c2.metric("Verified", verified_f)
+c3.metric("Unverified", total_f - verified_f)
+c4.metric("Avg H-Score", f"{avg_f:.1f}/10")
+c5.metric("Sources", sources_f)
 
 st.markdown("---")
 
 
 # --- Article Cards ---
 
-sort_field = "h_score" if sort_by == "H-Score" else "published"
-articles = db.get_articles(
-    verified_only=filter_verified,
-    ai_only=filter_ai,
-    search=search_term if search_term else None,
-    sort_by=sort_field,
-    date_from=str(date_from) if date_from else None,
-    limit=200
-)
+if sort_by == "H-Score":
+    articles = sorted(articles_for_stats, key=lambda a: a.get("h_score") or -1, reverse=True)
+else:
+    articles = sorted(articles_for_stats, key=lambda a: a.get("published") or "", reverse=True)
 
 if not articles:
     st.info("No articles match the current filters.")
@@ -134,8 +141,7 @@ else:
 
 st.subheader("All Collected Articles")
 
-all_articles = db.get_articles(limit=2000, sort_by="published",
-                               date_from=str(date_from) if date_from else None)
+all_articles = articles
 
 rows = []
 for a in all_articles:
